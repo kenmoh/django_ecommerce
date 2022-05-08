@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.db.models import Count
 from django.utils.html import format_html, urlencode
 from django.urls import reverse
-from .models import Collection, Product, Customer
+from .models import Collection, Product, Customer, Order
 
 
 # noinspection PyMethodMayBeStatic
@@ -20,12 +20,16 @@ class ProductAdmin(admin.ModelAdmin):
         return 'OK'
 
 
+# noinspection PyMethodMayBeStatic
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ['first_name', 'last_name', 'membership']
+    list_display = ['first_name', 'last_name', 'membership', 'orders']
     list_editable = ['membership']
     ordering = ['first_name', 'last_name']
     list_per_page = 50
+
+    def orders(self, customer):
+        return customer.order_set.count()
 
 
 # noinspection PyMethodMayBeStatic
@@ -47,3 +51,6 @@ class CollectionAdin(admin.ModelAdmin):
         return super().get_queryset(request).annotate(
             product_count=Count('product')
         )
+
+
+admin.site.register(Order)

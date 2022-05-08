@@ -74,6 +74,9 @@ class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
     placed_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f'{self.customer.first_name} {self.customer.last_name}'
+
 
 # Order Item Model
 class OrderItem(models.Model):
