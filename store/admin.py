@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.db.models import Count
 from django.utils.html import format_html, urlencode
 from django.urls import reverse
-from .models import Collection, Product, Customer, Order
+from .models import Collection, Product, Customer, Order, OrderItem
 
 product_is_low = 'low_inventory'
 
@@ -32,6 +32,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_editable = ['unit_price']
     list_per_page = 50
     list_filter = ['collection', 'last_update', FilterInventory]
+    search_fields = ['product']
 
     # Computed Field
     @admin.display(ordering='inventory')
@@ -82,7 +83,15 @@ class CollectionAdin(admin.ModelAdmin):
         )
 
 
+class OrderItemInline(admin.TabularInline):
+    autocomplete_fields = ['product']
+    min_num = 1
+    model = OrderItem
+    extra = 0
+
+
 @admin.register(Order)
-class OrderAdin(admin.ModelAdmin):
+class OrderAdmin(admin.ModelAdmin):
     autocomplete_fields = ['customer']
+    inlines = [OrderItemInline]
     list_display = ['customer', 'payment_status', 'placed_at']
