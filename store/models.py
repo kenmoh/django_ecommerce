@@ -17,7 +17,7 @@ class Collection(models.Model):
     featured_product = models.ForeignKey('Product', on_delete=models.SET_NULL, null=True, blank=True, related_name='+')
 
     def __str__(self):
-        return f'{self.title}'
+        return self.title
 
 
 # Product Model
