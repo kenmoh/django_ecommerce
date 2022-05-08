@@ -24,6 +24,10 @@ class FilterInventory(admin.SimpleListFilter):
 # noinspection PyMethodMayBeStatic
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
+    autocomplete_fields = ['collection']
+    prepopulated_fields = {
+        'slug': ['title']
+    }
     list_display = ['title', 'unit_price', 'inventory_status']
     list_editable = ['unit_price']
     list_per_page = 50
@@ -60,6 +64,7 @@ class CustomerAdmin(admin.ModelAdmin):
 @admin.register(Collection)
 class CollectionAdin(admin.ModelAdmin):
     list_display = ['title', 'product_count']
+    search_fields = ['title']
 
     # Computed Field
     @admin.display(ordering='product_count')
@@ -77,4 +82,7 @@ class CollectionAdin(admin.ModelAdmin):
         )
 
 
-admin.site.register(Order)
+@admin.register(Order)
+class OrderAdin(admin.ModelAdmin):
+    autocomplete_fields = ['customer']
+    list_display = ['customer', 'payment_status', 'placed_at']
