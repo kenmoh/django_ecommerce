@@ -8,5 +8,5 @@ admin.site.index_title = "STORE MANAGEMENT"
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('store.urls')),
+    path('store/', include('store.urls')),
 ]
