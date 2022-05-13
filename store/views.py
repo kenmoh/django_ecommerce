@@ -5,6 +5,7 @@ from .serializers import ProductSerializer
 from .models import Product
 
 
+# noinspection PyUnusedLocal
 @api_view()
 def product_list(request):
     queryset = Product.objects.select_related('collection').all()
